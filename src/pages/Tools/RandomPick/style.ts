@@ -1,7 +1,4 @@
-import { ReactNode, HTMLAttributes } from 'react';
 import styled from 'styled-components';
-
-import Button from '@Components/Button';
 
 import { flexCustom } from '@Styles/common';
 import theme from '@Styles/theme';
@@ -26,12 +23,6 @@ export const RandomResult = styled.div<RandomResultLayoutProps>`
   aspect-ratio: 5/3;
   margin: auto;
   border-radius: 10px;
-  background-image: ${(props) =>
-    props.media !== 'mobile' ? `url(${props.backgroundImage})` : 'none'};
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: burlywood;
 `;
 
 export const ChoosedComponentsContainer = styled.div`
@@ -44,78 +35,31 @@ export const ChoosedComponentsContainer = styled.div`
   padding: 16px;
 `;
 
-type SelectBackgroundButtonWrapperProps = HTMLAttributes<HTMLDivElement> & {
-  alignItems?: string;
-  justifyContent?: string;
-  children?: ReactNode;
-};
-
 type ResultWrapperProps = {
   color: string;
 };
 
-export const SelectBackgroundButtonWrapper = styled.div<SelectBackgroundButtonWrapperProps>`
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-export const BackgroundButtonContainer = styled.div`
-  ${flexCustom('row', 'center', 'center')}
-`;
-
-type backgroundButtonProps = {
-  backgroundColor: string;
-  hoverBackground: string;
-  textColor: string;
-  media: string;
-};
-
-export const WoodBackgroundButton = styled(Button)<backgroundButtonProps>`
-  ${flexCustom('row', 'center', 'center')}
-  width: ${(props) => (props.media === 'tablet' ? '20px' : '28px')};
-  margin: 12px 12px 8px 0px;
-  border-radius: 50%;
-  padding: 0px;
-  background-color: ${(props) => props.backgroundColor};
-  border-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.textColor};
-  &:hover {
-    background-color: ${(props) => props.hoverBackground};
-  }
-
-  &:active {
-    background-color: ${(props) => props.hoverBackground};
-  }
-  font-size: ${(props) => (props.media === 'tablet' ? 'smaller' : 'large')};
-`;
-
 export const ResultWrapper = styled.div<ResultWrapperProps>`
-  color: ${(props) => props.color};
+  color: ${(props) => props.theme.text};
   font-weight: bold;
   font-size: 3.6rem;
-  margin-bottom: 16px;
   text-align: center;
 `;
 
-type ResultSpanProps = {
-  media: string;
-};
-
-export const ResultSpan = styled.span<ResultSpanProps>`
+export const ResultSpan = styled.span`
   display: inline-block;
   text-align: center;
-  font-size: 3.6rem;
+  font-size: 3rem;
   max-width: 840px;
   word-break: break-all;
-  font-size: ${(props) => (props.media === 'tablet' ? 'large' : {})};
 `;
 
-export const CheckParagraph = styled.p<ResultSpanProps>`
-  font-size: ${(props) => (props.media === 'tablet' ? 'large' : {})};
+export const CheckParagraph = styled.p`
+  margin-top: 8px;
+  text-align: center;
+  max-width: 840px;
+  font-size: 3rem;
+  word-break: keep-all;
 `;
 
 export const ButtonWrapper = styled.div`
