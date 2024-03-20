@@ -5,7 +5,7 @@ import { useToast } from '@Hooks/toast';
 import useModal from '@Hooks/useModal';
 
 import Button from '@Components/Button';
-import Input from '@Components/Input';
+import Select from '@Components/Select';
 
 import theme from '@Styles/theme';
 
@@ -44,21 +44,22 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     const { value } = event.currentTarget;
+
     setSettings((prevSettings) => ({
       ...prevSettings,
       studentsListId: Number(value),
     }));
   };
 
-  const handleChangeStudentsCount = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const { value } = event.currentTarget;
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      studentsCount: Number(value),
-    }));
-  };
+  // const handleChangeStudentsCount = (
+  //   event: React.ChangeEvent<HTMLInputElement>,
+  // ) => {
+  //   const { value } = event.currentTarget;
+  //   setSettings((prevSettings) => ({
+  //     ...prevSettings,
+  //     studentsCount: Number(value),
+  //   }));
+  // };
 
   const handleClickDuplication = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -113,7 +114,30 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
       </S.ModalContainer>
       <S.ModalContainer>
         <S.ListSpan>학생 수 선택</S.ListSpan>
-        <label>
+        <Select
+          options={
+            MOCK_STUDENTS_LISTS.find(
+              ({ id }) => id === randomPickSetting.studentsListId,
+            )
+              ? Array.from(
+                  {
+                    length:
+                      MOCK_STUDENTS_LISTS.find(
+                        ({ id }) => id === randomPickSetting.studentsListId,
+                      )?.students.length ?? 0,
+                  },
+                  (_, index) => index + 1,
+                )
+              : []
+          }
+          onChangeOption={(selected) =>
+            setSettings((prevSettings) => ({
+              ...prevSettings,
+              studentsCount: Number(selected),
+            }))
+          }
+        />
+        {/* <label>
           <Input
             size="sm"
             margin="5px"
@@ -124,7 +148,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
             onChange={handleChangeStudentsCount}
           />
           명
-        </label>
+        </label> */}
       </S.ModalContainer>
       <S.ModalContainer>
         <S.ListSpan>중복 여부</S.ListSpan>
