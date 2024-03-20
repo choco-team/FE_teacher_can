@@ -7,6 +7,9 @@ import useModal from '@Hooks/useModal';
 
 import Button from '@Components/Button';
 
+import teachercan_logo from '@Assets/image/logo/teachercan-logo.png';
+import teachercan_logo_2 from '@Assets/image/logo/teachercan-logo_2.png';
+
 import RandomPickModal, { RandomPickSetting } from './RandomPickModal';
 import { MOCK_STUDENTS_LISTS } from './mock';
 import * as S from './style';
@@ -96,12 +99,17 @@ function RandomPick() {
 
   return (
     <S.Layout>
+      <S.LogoImage_2 src={teachercan_logo_2} alt="TeacherCan Logo_2" />
+      <S.LogoImage src={teachercan_logo} alt="TeacherCan Logo" />
       <>
-        <S.RandomResult media={media}>
+        <S.RandomResult>
           <S.ResultWrapper color={'black'}>
             {pickedStudents.length !== 0 && (
               <p>
-                <S.ResultSpan>{pickedStudents.join('    ')}</S.ResultSpan>
+                {/* <S.ResultSpan>{pickedStudents.join('    ')}</S.ResultSpan> */}
+                {pickedStudents.map((student, index) => (
+                  <S.ResultSpan key={index}>{student}</S.ResultSpan>
+                ))}
               </p>
             )}
 
@@ -129,32 +137,29 @@ function RandomPick() {
                 </>
               )}
           </S.ResultWrapper>
-          <S.ButtonWrapper>
-            <Button
-              onClick={handlePick}
-              size={media === 'tablet' ? 'sm' : 'lg'}
-            >
-              <AiOutlineUserAdd />
-              뽑기
-            </Button>
-            <Button
-              size={media === 'tablet' ? 'sm' : 'lg'}
-              onClick={() => {
-                {
-                  openModal(
-                    <RandomPickModal
-                      randomPickSetting={randomPickSetting}
-                      media={media}
-                    />,
-                  );
-                }
-              }}
-            >
-              <AiFillSetting />
-              설정
-            </Button>
-          </S.ButtonWrapper>
         </S.RandomResult>
+        <S.ButtonWrapper>
+          <Button onClick={handlePick} size={media === 'tablet' ? 'sm' : 'lg'}>
+            <AiOutlineUserAdd />
+            뽑기
+          </Button>
+          <Button
+            size={media === 'tablet' ? 'sm' : 'lg'}
+            onClick={() => {
+              {
+                openModal(
+                  <RandomPickModal
+                    randomPickSetting={randomPickSetting}
+                    media={media}
+                  />,
+                );
+              }
+            }}
+          >
+            <AiFillSetting />
+            설정
+          </Button>
+        </S.ButtonWrapper>
       </>
     </S.Layout>
   );
