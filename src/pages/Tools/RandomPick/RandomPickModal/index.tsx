@@ -53,10 +53,6 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     setSettings((prevSettings) => ({
       ...prevSettings,
       studentsListId: Number(value),
-    }));
-
-    setSettings((prevSettings) => ({
-      ...prevSettings,
       studentsListLength: MOCK_STUDENTS_LISTS.find(
         ({ id }) => id === Number(value),
       )?.students.length,
@@ -130,6 +126,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
             }))
           }
           options={Array.from({ length: count ?? 0 }, (_, index) => index + 1)}
+          defaultOption={Number(settings.studentsCount ?? 0)}
         />
       </S.ModalContainer>
       <S.ModalContainer>
