@@ -21,6 +21,7 @@ function RandomPick() {
       studentsListId: undefined,
       studentsCount: undefined,
       isAllowDuplication: undefined,
+      studentsListLength: undefined,
     },
   );
   //학생 명단
