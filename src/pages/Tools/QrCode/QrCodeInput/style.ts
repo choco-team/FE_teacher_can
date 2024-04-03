@@ -98,8 +98,8 @@ export const StorageButton = styled.div`
 
 export const ModalContent = styled.div`
   background-color: white;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 100%;
+  max-height: 100%;
   padding: 20px;
   text-align: center;
   position: fixed;

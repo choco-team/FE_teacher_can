@@ -1,10 +1,4 @@
-import React, { useState, useRef } from 'react';
-import { FaSquare } from 'react-icons/fa';
-import {
-  TfiLayoutGrid4Alt,
-  TfiLayoutGrid2Alt,
-  TfiLayoutGrid3Alt,
-} from 'react-icons/tfi';
+import React, { useState, useRef, ChangeEventHandler } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
 import useModal from '@Hooks/useModal';
@@ -12,7 +6,7 @@ import useModal from '@Hooks/useModal';
 import Button from '@Components/Button';
 
 import * as S from './style';
-import QrCodePrintPage from '../QrCodePrintPage';
+import QrcodePrintPage from '../QrCodePrintPage';
 
 const QrCodePrintOption: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -20,20 +14,16 @@ const QrCodePrintOption: React.FC = () => {
   const [number, setNumber] = useState<number>(0);
   const componentRef = useRef<HTMLDivElement>(null);
 
-  const handleChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeNumber: ChangeEventHandler<HTMLInputElement> = (e) => {
     const newValue = parseInt(e.target.value, 10);
 
     if (!isNaN(newValue) && newValue >= 0) {
       setNumber(newValue);
     }
   };
-  const increment = () => setNumber((prevNumber) => prevNumber + 1);
-  const decrement = () => {
-    setNumber((prevNumber) => (prevNumber > 0 ? prevNumber - 1 : 0));
-  };
 
-  const handleSizeSelect = (size: string) => {
-    setSelectedSize(size);
+  const handleSizeSelect: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    setSelectedSize(event.target.value);
   };
 
   const handleCancelBtn = () => {
@@ -43,40 +33,41 @@ const QrCodePrintOption: React.FC = () => {
   const handlePrintBtn = useReactToPrint({
     content: () => componentRef.current!,
   });
+
   return (
     <S.Container>
-      <S.NumberSelectContainer>
-        <S.NameSpan>개수 선택</S.NameSpan>
-        <S.NumberContainer>
-          <S.NumberInput
-            type="number"
-            value={number}
-            onChange={handleChangeNumber}
-          />
-        </S.NumberContainer>
-      </S.NumberSelectContainer>
+      <S.OptionContainer>
+        <S.NumberSelectContainer>
+          <S.NameSpan>개수 선택</S.NameSpan>
+          <S.NumberContainer>
+            <S.NumberInput
+              type="number"
+              value={number}
+              onChange={handleChangeNumber}
+            />
+          </S.NumberContainer>
+        </S.NumberSelectContainer>
 
-      <S.SizeSelectContainer>
-        <S.NameSpan>크기 선택</S.NameSpan>
-        {['5x8', '4x4', '2x2', '1x1'].map((size) => (
-          <S.SizeSelectButton
-            key={size}
-            onClick={() => handleSizeSelect(size)}
-            isSelected={selectedSize === size}
-          >
-            {size === '5x8' && <TfiLayoutGrid4Alt />}
-            {size === '4x4' && <TfiLayoutGrid3Alt />}
-            {size === '2x2' && <TfiLayoutGrid2Alt />}
-            {size === '1x1' && <FaSquare />}
+        <S.SizeSelectContainer>
+          <S.NameSpan>크기 선택</S.NameSpan>
+          <S.SizeSelectButton onChange={handleSizeSelect} value={selectedSize}>
+            <option value="5*8">5*8</option>
+            <option value="4*4">4*4</option>
+            <option value="2*2">2*2</option>
+            <option value="1*1">1*1</option>
           </S.SizeSelectButton>
-        ))}
-      </S.SizeSelectContainer>
+        </S.SizeSelectContainer>
+      </S.OptionContainer>
+
+      <S.Preview>
+        <QrcodePrintPage ref={componentRef} selectedSize={selectedSize} />
+      </S.Preview>
+
       <S.SmallButtonWrapper>
         <Button concept="text" variant="gray" onClick={handleCancelBtn}>
           취소
         </Button>
-        <Button onClick={handlePrintBtn}>인쇄</Button>
-        <QrCodePrintPage ref={componentRef} />
+        <Button onClick={handlePrintBtn}>인쇄</Button>{' '}
       </S.SmallButtonWrapper>
     </S.Container>
   );

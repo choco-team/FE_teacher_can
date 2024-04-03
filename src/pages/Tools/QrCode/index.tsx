@@ -5,14 +5,13 @@ import QrCodeStorage from './QrCodeStorage';
 import * as S from './style';
 
 function QrCode() {
-  const [isInStorageMode, setIsInStorageMode] = useState(false);
+  const [isInStorageMode, setIsInStorageMode] = useState<boolean>(false);
   const handleToStorage = () => {
-    setIsInStorageMode(!isInStorageMode); // isInStorageMode 상태 토글
+    setIsInStorageMode(!isInStorageMode);
   };
 
   return (
     <S.Container>
-      {/* isInStorageMode 상태에 따라 다른 버튼 텍스트를 보여줌 */}
       <S.StorageButton onClick={handleToStorage}>
         {isInStorageMode ? '새 QR 코드 생성' : '보관함'}
       </S.StorageButton>

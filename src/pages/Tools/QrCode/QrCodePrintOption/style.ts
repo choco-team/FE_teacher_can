@@ -3,11 +3,25 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  margin-top: 30px;
-  padding: 20px;
+  padding-bottom: 10px;
   width: 100%;
-  gap: 30px;
+  gap: 20px;
+`;
+
+export const Preview = styled.div`
+  margin: 0;
+  transform: scale(0.3);
+  transform-origin: top center;
+  overflow: hidden;
+  display: block;
+`;
+
+export const OptionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
 `;
 
 export const NameSpan = styled.span`
@@ -33,7 +47,7 @@ export const NumberSelectContainer = styled.div`
 
 export const NumberContainer = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   border: solid 1px #ccc;
   border-radius: 2px;
 `;
@@ -52,22 +66,11 @@ export const NumberUpdownButton = styled.div`
   color: #f48d8d;
 `;
 
-export const SizeSelectButton = styled.div<{ isSelected: boolean }>`
-  border: solid 1px ${(props) => (props.isSelected ? '#F17071' : '#ccc')};
-  background-color: ${(props) =>
-    props.isSelected ? '#fee3e2' : 'transparent'};
-  border-radius: 2px;
+export const SizeSelectButton = styled.div<{ isSelected: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #fee3e2;
-    border: 1px solid #fe6f61;
-  }
 `;
 
 export const ListSpan = styled.span`
@@ -81,7 +84,6 @@ export const ListSpan = styled.span`
 export const SmallButtonWrapper = styled.div`
   display: flex;
   padding: 0;
-  margin-top: 24px;
   align-items: flex-end;
   justify-content: flex-end;
   button {
