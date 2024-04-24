@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+// import theme from '@Styles/theme';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -9,11 +11,16 @@ export const Container = styled.div`
 `;
 
 export const Preview = styled.div`
-  margin: 0;
-  transform: scale(0.3);
+  /* transform: scale(0.3); */
   transform-origin: top center;
+  padding: 10px;
   overflow: hidden;
   display: block;
+  width: 210px;
+  height: 297px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const OptionContainer = styled.div`
@@ -22,6 +29,7 @@ export const OptionContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0px 20px;
+  gap: 20px;
 `;
 
 export const NameSpan = styled.span`
