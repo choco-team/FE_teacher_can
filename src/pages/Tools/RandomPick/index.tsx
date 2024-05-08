@@ -15,6 +15,9 @@ import { MOCK_STUDENTS_LISTS } from './mock';
 import * as S from './style';
 
 function RandomPick() {
+  // 학생 명렬표 한 개를 불러와야 합니다.
+  // /api/student/list/{id}
+
   const media = useMedia();
   const [randomPickSetting, setRandomPickSetting] = useState<RandomPickSetting>(
     {

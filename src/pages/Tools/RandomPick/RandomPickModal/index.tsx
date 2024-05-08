@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { AxiosResponse } from 'axios';
 import { useState, useEffect } from 'react';
 import { IoEllipse, IoEllipseOutline } from 'react-icons/io5';
 
@@ -8,6 +10,8 @@ import Button from '@Components/Button';
 import Select from '@Components/Select';
 
 import theme from '@Styles/theme';
+
+import { headerToken, axiosInstance } from '@Api/common';
 
 import * as S from './style';
 import { MOCK_STUDENTS_LISTS } from '../mock';
@@ -25,7 +29,51 @@ type RandomPickModalProps = {
   style?: React.CSSProperties;
 };
 
+// api/student/list
+// -> 현재 나의 명렬표를 모두 가져옵니다. 하지만 학생들은 보이지가 않습니다.
+// -> 각각의 명렬표의 아이디를 알 수 있어요.
+
+// api/student/list/{id}
+// -> id에 해당하는 명렬표를 가져옵니다. 학생들도 모두 있어요.
+
+// 2
+// 전체를 가져오고, 명렬표 리스트를 선택한다.
+// 아이디를 로컬스토리지에 저장을 한다.
+// RandomPick index.tsx 데이터를 불러온다.
+export type StudentListResponse = {
+  data: { studentList: { id: number; name: string }[] };
+};
+// 모달에서 불러오는 API
+export const getStudentList = (): Promise<AxiosResponse<StudentListResponse>> =>
+  axiosInstance.get('/student/list', {
+    ...headerToken(),
+  });
+
+// 나중에 RandomPick/index.tsx에서 불러오도록!
+export const getStudentListDetail = (id: number): Promise<AxiosResponse<any>> =>
+  axiosInstance.get(`/student/list/${id}`, {
+    ...headerToken(),
+  });
+
 function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
+  // 전체 학생 리스트를 가져와야 함.
+  // /api/student/list
+
+  // 로컬스토리지에 저장된 id
+  const id = 1;
+
+  const { data, isLoading: isGetStudentListLoading } = useQuery({
+    queryKey: ['student-list'],
+    queryFn: () => getStudentList().then((response) => response.data),
+  });
+
+  const { data: detailData } = useQuery({
+    queryKey: ['student-list-detail', id],
+    queryFn: () => getStudentListDetail(id).then((response) => response.data),
+  });
+
+  console.log('학생목록 디테일', detailData);
+
   const initialSetting = randomPickSetting ?? {
     studentsListId: undefined,
     studentsCount: undefined,
@@ -109,11 +157,13 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
           onChange={handleChangeStudentsListId}
         >
           <option value={0}>클릭하여 명렬표 선택</option>
-          {MOCK_STUDENTS_LISTS.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
+          {data?.data &&
+            data.data.studentList &&
+            data.data.studentList.map(({ id, name }) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
         </S.ListSelect>
       </S.ModalContainer>
       <S.ModalContainer>
