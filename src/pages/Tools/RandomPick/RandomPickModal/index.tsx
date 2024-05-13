@@ -14,7 +14,6 @@ import theme from '@Styles/theme';
 import { headerToken, axiosInstance } from '@Api/common';
 
 import * as S from './style';
-import { MOCK_STUDENTS_LISTS } from '../mock';
 
 export type RandomPickSetting = {
   studentsListId: number | undefined;
@@ -29,17 +28,6 @@ type RandomPickModalProps = {
   style?: React.CSSProperties;
 };
 
-// api/student/list
-// -> 현재 나의 명렬표를 모두 가져옵니다. 하지만 학생들은 보이지가 않습니다.
-// -> 각각의 명렬표의 아이디를 알 수 있어요.
-
-// api/student/list/{id}
-// -> id에 해당하는 명렬표를 가져옵니다. 학생들도 모두 있어요.
-
-// 2
-// 전체를 가져오고, 명렬표 리스트를 선택한다.
-// 아이디를 로컬스토리지에 저장을 한다.
-// RandomPick index.tsx 데이터를 불러온다.
 export type StudentListResponse = {
   data: { studentList: { id: number; name: string }[] };
 };
@@ -50,29 +38,22 @@ export const getStudentList = (): Promise<AxiosResponse<StudentListResponse>> =>
   });
 
 // 나중에 RandomPick/index.tsx에서 불러오도록!
-export const getStudentListDetail = (id: number): Promise<AxiosResponse<any>> =>
+export type StudentListDetailResponse = {
+  data: { students: { studentNumber: number; studentName: string }[] };
+};
+
+export const getStudentListDetail = (
+  id: number | undefined,
+): Promise<AxiosResponse<StudentListDetailResponse>> =>
   axiosInstance.get(`/student/list/${id}`, {
     ...headerToken(),
   });
 
 function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
-  // 전체 학생 리스트를 가져와야 함.
-  // /api/student/list
-
-  // 로컬스토리지에 저장된 id
-  const id = 1;
-
   const { data, isLoading: isGetStudentListLoading } = useQuery({
     queryKey: ['student-list'],
     queryFn: () => getStudentList().then((response) => response.data),
   });
-
-  const { data: detailData } = useQuery({
-    queryKey: ['student-list-detail', id],
-    queryFn: () => getStudentListDetail(id).then((response) => response.data),
-  });
-
-  console.log('학생목록 디테일', detailData);
 
   const initialSetting = randomPickSetting ?? {
     studentsListId: undefined,
@@ -101,11 +82,27 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     setSettings((prevSettings) => ({
       ...prevSettings,
       studentsListId: Number(value),
-      studentsListLength: MOCK_STUDENTS_LISTS.find(
-        ({ id }) => id === Number(value),
-      )?.students.length,
     }));
   };
+
+  const { data: detailData } = useQuery({
+    queryKey: ['student-list-detail', settings.studentsListId],
+    queryFn: () =>
+      getStudentListDetail(settings.studentsListId).then(
+        (response) => response.data,
+      ),
+  });
+
+  console.log('학생목록 디테일', detailData);
+
+  useEffect(() => {
+    if (detailData && detailData.data.students) {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        studentsListLength: detailData.data.students.length,
+      }));
+    }
+  }, [detailData, settings.studentsListId]);
 
   useEffect(() => {
     if (settings.studentsListLength) {
