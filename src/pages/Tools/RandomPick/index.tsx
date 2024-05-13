@@ -11,7 +11,6 @@ import teachercan_logo from '@Assets/image/logo/teachercan-logo.png';
 import teachercan_logo_2 from '@Assets/image/logo/teachercan-logo_2.png';
 
 import RandomPickModal, { RandomPickSetting } from './RandomPickModal';
-import { MOCK_STUDENTS_LISTS } from './mock';
 import * as S from './style';
 
 function RandomPick() {
@@ -25,6 +24,7 @@ function RandomPick() {
       studentsCount: undefined,
       isAllowDuplication: undefined,
       studentsListLength: undefined,
+      studentsList: undefined,
     },
   );
   //학생 명단
@@ -58,11 +58,12 @@ function RandomPick() {
   };
 
   const handleConfirm = () => {
-    const fetchedStudentsList = MOCK_STUDENTS_LISTS.find(
-      ({ id }) => id === randomPickSetting.studentsListId,
-    )?.students;
+    const fetchedStudentsList = randomPickSetting.studentsList;
+
     if (fetchedStudentsList)
-      setStudentsList(fetchedStudentsList.map(({ name }) => name));
+      setStudentsList(
+        fetchedStudentsList.map((student) => student.studentName),
+      );
     setPickedStudents([]);
   };
 
@@ -83,16 +84,20 @@ function RandomPick() {
   }, [isOpen]);
 
   useEffect(() => {
-    const fetchedStudentsList = MOCK_STUDENTS_LISTS.find(
-      ({ id }) => id === randomPickSetting.studentsListId,
-    )?.students;
+    const fetchedStudentsList = randomPickSetting.studentsList;
     const fetchedIsAllowDuplication = randomPickSetting.isAllowDuplication;
     if (fetchedStudentsList)
-      setStudentsList(fetchedStudentsList.map(({ name }) => name));
+      setStudentsList(
+        fetchedStudentsList.map((student) => student.studentName),
+      );
 
     setDuplication(fetchedIsAllowDuplication);
     setPickedStudents([]);
-  }, [randomPickSetting.studentsListId, randomPickSetting.isAllowDuplication]);
+  }, [
+    randomPickSetting.studentsListId,
+    randomPickSetting.studentsList,
+    randomPickSetting.isAllowDuplication,
+  ]);
 
   useEffect(() => {
     const fetchedStudentsCount = randomPickSetting.studentsCount;

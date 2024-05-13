@@ -20,6 +20,7 @@ export type RandomPickSetting = {
   studentsCount: number | undefined;
   isAllowDuplication: boolean | undefined;
   studentsListLength: number | undefined;
+  studentsList: Array<{ studentName: string }> | undefined;
 };
 
 type RandomPickModalProps = {
@@ -60,6 +61,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     studentsCount: undefined,
     isAllowDuplication: undefined,
     studentsListLength: undefined,
+    studentsList: undefined,
   };
 
   const [settings, setSettings] = useState({
@@ -67,6 +69,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     studentsCount: initialSetting.studentsCount,
     isAllowDuplication: initialSetting.isAllowDuplication,
     studentsListLength: initialSetting.studentsListLength,
+    studentsList: initialSetting.studentsList,
   });
 
   const [count, setCount] = useState<number>(0);
@@ -93,13 +96,14 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
       ),
   });
 
-  console.log('학생목록 디테일', detailData);
-
   useEffect(() => {
     if (detailData && detailData.data.students) {
       setSettings((prevSettings) => ({
         ...prevSettings,
         studentsListLength: detailData.data.students.length,
+        studentsList: detailData.data.students.map((studentData) => ({
+          studentName: studentData.studentName,
+        })),
       }));
     }
   }, [detailData, settings.studentsListId]);
