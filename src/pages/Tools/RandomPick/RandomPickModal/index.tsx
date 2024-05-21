@@ -77,16 +77,16 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
   const { closeModal } = useModal();
   const { showToast } = useToast();
 
-  const handleChangeStudentsListId = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const { value } = event.currentTarget;
+  // const handleChangeStudentsListId = (
+  //   event: React.ChangeEvent<HTMLSelectElement>,
+  // ) => {
+  //   const { value } = event.currentTarget;
 
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      studentsListId: Number(value),
-    }));
-  };
+  //   setSettings((prevSettings) => ({
+  //     ...prevSettings,
+  //     studentsListId: Number(value),
+  //   }));
+  // };
 
   const { data: detailData } = useQuery({
     queryKey: ['student-list-detail', settings.studentsListId],
@@ -153,19 +153,20 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
       </S.ModalContainer>
       <S.ModalContainer>
         <S.ListSpan>명렬표 선택</S.ListSpan>
-        <S.ListSelect
-          value={settings.studentsListId}
-          onChange={handleChangeStudentsListId}
-        >
-          <option value={0}>클릭하여 명렬표 선택</option>
-          {data?.data &&
-            data.data.studentList &&
-            data.data.studentList.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-        </S.ListSelect>
+        <Select
+          onChangeOption={(selectedName) => {
+            const selectedOption = data?.data?.studentList?.find(
+              ({ name }) => name === selectedName,
+            );
+            if (selectedOption) {
+              setSettings((prevSettings) => ({
+                ...prevSettings,
+                studentsListId: selectedOption.id,
+              }));
+            }
+          }}
+          options={data?.data?.studentList?.map(({ name }) => name) || []}
+        />
       </S.ModalContainer>
       <S.ModalContainer>
         <S.ListSpan>학생 수 선택</S.ListSpan>
