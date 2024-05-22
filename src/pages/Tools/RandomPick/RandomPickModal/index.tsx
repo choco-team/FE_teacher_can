@@ -143,6 +143,11 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
     closeModal();
   };
 
+  const studentList = data?.data?.studentList ?? [];
+  const defaultStudentListName = studentList.find(
+    ({ id }) => settings.studentsListId === id,
+  )?.name;
+
   return (
     <>
       <S.ModalContainer>
@@ -165,8 +170,8 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
               }));
             }
           }}
-          options={data?.data?.studentList?.map(({ name }) => name) || []}
-          // defaultOption={selectedName}
+          options={studentList.map(({ name }) => name)}
+          defaultOption={defaultStudentListName}
         />
       </S.ModalContainer>
       <S.ModalContainer>
@@ -184,35 +189,36 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
       </S.ModalContainer>
       <S.ModalContainer>
         <S.ListSpan>중복 여부</S.ListSpan>
-
-        <S.SmallButton
-          value="YES"
-          isOnClick={settings.isAllowDuplication}
-          onClick={handleClickDuplication}
-        >
-          <S.IconWrapper>
-            {settings.isAllowDuplication ? (
-              <IoEllipse color={theme.color.primary[300]} />
-            ) : (
-              <IoEllipseOutline />
-            )}
-          </S.IconWrapper>
-          학생 중복뽑기
-        </S.SmallButton>
-        <S.SmallButton
-          value="NO"
-          isOnClick={!settings.isAllowDuplication}
-          onClick={handleClickDuplication}
-        >
-          <S.IconWrapper>
-            {settings.isAllowDuplication ? (
-              <IoEllipseOutline />
-            ) : (
-              <IoEllipse color={theme.color.primary[300]} />
-            )}
-          </S.IconWrapper>
-          뽑힌 학생 제외하기
-        </S.SmallButton>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <S.SmallButton
+            value="YES"
+            isOnClick={settings.isAllowDuplication}
+            onClick={handleClickDuplication}
+          >
+            <S.IconWrapper>
+              {settings.isAllowDuplication ? (
+                <IoEllipse color={theme.color.primary[300]} />
+              ) : (
+                <IoEllipseOutline />
+              )}
+            </S.IconWrapper>
+            학생 중복뽑기
+          </S.SmallButton>
+          <S.SmallButton
+            value="NO"
+            isOnClick={!settings.isAllowDuplication}
+            onClick={handleClickDuplication}
+          >
+            <S.IconWrapper>
+              {settings.isAllowDuplication ? (
+                <IoEllipseOutline />
+              ) : (
+                <IoEllipse color={theme.color.primary[300]} />
+              )}
+            </S.IconWrapper>
+            뽑힌 학생 제외하기
+          </S.SmallButton>
+        </div>
       </S.ModalContainer>
       <S.SmallButtonWrapper>
         <Button concept="text" variant="gray" onClick={handleCancelBtn}>
