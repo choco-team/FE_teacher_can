@@ -166,6 +166,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
             }
           }}
           options={data?.data?.studentList?.map(({ name }) => name) || []}
+          // defaultOption={selectedName}
         />
       </S.ModalContainer>
       <S.ModalContainer>
