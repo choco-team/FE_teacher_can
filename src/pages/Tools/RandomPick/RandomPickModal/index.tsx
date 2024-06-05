@@ -167,6 +167,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
               setSettings((prevSettings) => ({
                 ...prevSettings,
                 studentsListId: selectedOption.id,
+                studentsCount: 0,
               }));
             }
           }}
@@ -177,6 +178,7 @@ function RandomPickModal({ randomPickSetting }: RandomPickModalProps) {
       <S.ModalContainer>
         <S.ListSpan>학생 수 선택</S.ListSpan>
         <Select
+          key={`${settings.studentsListId}-${settings.studentsCount}`}
           onChangeOption={(selected) =>
             setSettings((prevSettings) => ({
               ...prevSettings,
