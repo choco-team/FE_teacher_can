@@ -5,8 +5,15 @@ import theme from '@Styles/theme';
 
 export const ModalContainer = styled.div`
   padding: 5px;
-  display: flex; /* Use flexbox */
-  align-items: center;
+  // display: flex; /* Use flexbox */
+  // align-items: center;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+
+  // &:last-child {
+  //   flex: 1;
+  // }
 `;
 
 export const SmallButtonWrapper = styled.div`
